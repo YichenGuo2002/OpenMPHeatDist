@@ -222,24 +222,28 @@ void  parallel_heat_dist(float * playground, unsigned int N, unsigned int iterat
   
   /* Copy initial array in temp */
   memcpy((void *)temp, (void *) playground, num_bytes);
-  
-  #pragma omp parallel for num_threads(numthreads) default(none) shared(playground, temp) private(i,j)
+  #pragma omp parallel num_threads(numthreads) private(k)
   for (k = 0; k < iterations; k++)
   {
       /* Calculate new values and store them in temp */
-      #pragma omp for
+      #pragma omp for schedule(static) collapse(2)
       for (i = 1; i < upper; i++)
       {
-          #pragma omp for
-          for (j = 1; j < upper; j++)
+          for (j = 1; j < upper; j++){
               temp[index(i, j, N)] = (playground[index(i - 1, j, N)] +
                                         playground[index(i + 1, j, N)] +
                                         playground[index(i, j - 1, N)] +
                                         playground[index(i, j + 1, N)]) / 4.0;
+          }
       }
 
       /* Move new values into old values */
-      memcpy((void *)playground, (void *)temp, num_bytes);
+      #pragma omp for schedule(static) collapse(2)
+      for (i = 1; i < upper; i++)
+      {
+          for (j = 1; j < upper; j++)
+              playground[index(i, j, N)] = temp[index(i, j, N)];
+      }
   }
   free(temp); 
 }

@@ -12,7 +12,7 @@ exit
 
 ssh <id>@access1.cims.nyu.edu
 ssh <id>@crunchy1.cims.nyu.edu
-module load gcc-122.2
+module load gcc-12.2
 
 gcc -Wall -std=c99 -fopenmp -o filename filename.c -lm
 ./filename x y z k
