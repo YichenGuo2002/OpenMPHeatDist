@@ -2,7 +2,7 @@
 
  - Assignment Tech Stack: C, OpenMP
 
- - Description: 
+ - Description: C and OpenMP based parallel computing program that computed the heat distribution for each block. Input block size, rounds of calculation, and compare the speed of parallel and sequential program.
 
  - Code Cheatsheet:
  ```
